@@ -12,7 +12,11 @@ public class Main {
         int V = Integer.parseInt(input[2]); // 나무의 높이
 
         // 달팽이가 올라가는 높이를 계산하여 몇 일이 걸리는지 구함
-        int days = (V - B - 1) / (A - B) + 1;
+        int days = (V-B) / (A-B);
+
+        if((V-B) % (A-B) != 0){
+            days++;
+        }
 
         bw.write(String.valueOf(days));
         bw.flush();
