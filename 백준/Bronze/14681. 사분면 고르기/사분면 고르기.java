@@ -1,19 +1,28 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
+
+
 
 public class Main{
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        int num1 = sc.nextInt();
-        int num2 = sc.nextInt();
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         
-        if(num1 > 0 && num2 > 0){
-            System.out.println("1");
-        }else if(num1 < 0 && num2 > 0){
-            System.out.println("2");
-        }else if(num1 < 0 && num2 < 0){
-            System.out.println("3");
+        int x = Integer.parseInt(br.readLine());
+        int y = Integer.parseInt(br.readLine());
+        
+        if(x > 0 && y > 0){
+            bw.write("1");            
+        }else if(x < 0 && y > 0){
+            bw.write("2");
+        }else if(x < 0 && y < 0){
+            bw.write("3");
         }else{
-            System.out.println("4");
+            bw.write("4");
         }
+        
+        bw.flush();
+        br.close();
+        bw.close();
     }
 }
