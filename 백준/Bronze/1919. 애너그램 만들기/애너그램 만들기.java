@@ -6,24 +6,24 @@ public class Main {
         String a = sc.next();
         String b = sc.next();
 
-        int[] countA = new int[26];
-        int[] countB = new int[26];
-        for(int i = 0; i<a.length();i++){
-            countA[a.charAt(i) - 'a']++;
-            
-        }
-        for(int i = 0; i < b.length();i++){
-            countB[b.charAt(i) - 'a']++;
-        }
+        int[] countA = getCount(a);
+        int[] countB = getCount(b);
+       
 
         int ans = 0;
         for(int i = 0; i < 26;i++){
-            if(countA[i] > countB[i]){
-                ans += countA[i] - countB[i];
-            }else if(countA[i] < countB[i]){
-                ans += countB[i] - countA[i];
-            }
+            ans += Math.abs(countA[i]-countB[i]);            
         }
        System.out.println(ans);
+    } 
+
+    public static int[] getCount(String str){
+        int[] count = new int[26];
+        for(int i = 0; i < str.length(); i++){
+        count[str.charAt(i) - 'a']++;
+        }
+        return count;
     }
+
+    
 }
