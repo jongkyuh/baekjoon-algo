@@ -7,19 +7,17 @@ public class Main {
         String doc = sc.nextLine();
         String s = sc.nextLine();
         int count = 0;
-        for(int i = 0; i < doc.length();i++){
-             boolean is = true;
-            for(int j = 0; j < s.length(); j++){
-               
-                if(i+j >= doc.length() || s.charAt(j) != doc.charAt(i+j)){
-                    is = false;
-                    break;
-                }
+        int index = 0;
+        
+        while(true){
+            int find = doc.indexOf(s,index);
+            if(find < 0){
+                break;
             }
-            if(is){
-            ++count;
-            i+=s.length()- 1;
-        }
+            count++;
+            index = find + s.length();
+            
+            
         }
 
         
