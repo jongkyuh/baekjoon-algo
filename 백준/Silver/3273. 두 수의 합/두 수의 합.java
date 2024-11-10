@@ -8,22 +8,22 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int n = Integer.parseInt(sc.nextLine());
         String[] str = sc.nextLine().split(" ");
-        int k = Integer.parseInt(sc.nextLine());
-        int count = 0;
-        
-        HashSet<Integer> hash = new HashSet<>();
-        for(int i = 0; i < n; i++){
-            int num = Integer.parseInt(str[i]);
+        int[] arr = new int[n];
+        for(int i = 0; i < n;i++){
+            arr[i] = Integer.parseInt(str[i]);
+        }
+        int g = Integer.parseInt(sc.nextLine());
 
-            if(hash.contains(k-num)){
-                count++;
+        HashSet<Integer> hash = new HashSet<>();
+        int count = 0;
+        for(int i = 0; i < n;i++){
+            if(hash.contains(g-arr[i])){
+                ++count;
             }
-            hash.add(num);
-            
+            hash.add(arr[i]);
         }
 
-      
-
         System.out.println(count);
+        
     }
 }
