@@ -1,102 +1,97 @@
 import java.util.*;
 import java.io.*;
 
-public class Main{
-    static int[] visit;
-    static int[][] graph;
-    static int N;
-    static int M;
-    // static int start;
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    public static void main(String[] args) throws IOException{
-        
-        
-        String[] str = br.readLine().split(" ");
-        N = Integer.parseInt(str[0]);
-        M = Integer.parseInt(str[1]);
-        int start = Integer.parseInt(str[2]);
-        
-        visit = new int[N + 1];    // 방문여부 초기화 
-        graph = new int[N+1][N+1]; // 그래프 초기화
-        
-        for(int i = 0; i < M; i++){    // 연결되어 있는 간선 연결 
-            String[] vertex = br.readLine().split(" ");
-            int a = Integer.parseInt(vertex[0]);
-            int b = Integer.parseInt(vertex[1]);
-            
-            graph[a][b] = graph[b][a] = 1;
-        }
-        
-        DFS(start);
-        
-        Arrays.fill(visit,0);
-        bw.newLine();
-        
-        BFS(start);
-        bw.close();
-        br.close();
-        
-        
-        
-        
-    }
-    
-    static void DFS(int start) throws IOException{
+public class Main {
+
+    static void dfs(List<Integer>[] nodearr, int n, int start) {
+        StringBuilder sb = new StringBuilder();
         Stack<Integer> stack = new Stack<>();
-        StringBuilder sb = new StringBuilder();
-        stack.push(start);
-        
-        while(!stack.isEmpty()){
-            int a = stack.pop();
-            if(visit[a] == 0){
-                visit[a] = 1;
-               // bw.write(a + " ");
-                sb.append(a + " ");
-                ArrayList<Integer> arrList = new ArrayList<>();
-                
-                for(int i = 1; i < N + 1;i++){
-                    if(visit[i] == 0 && graph[a][i] == 1){
-                        arrList.add(i);
-                    }
-                }
-                Collections.sort(arrList,Collections.reverseOrder());    // 내림차순 정렬
-                
-                for(int b : arrList){
-                    stack.push(b);
-                }
-                arrList.clear(); 
-            }           
-            
+        boolean[] isVisit = new boolean[n + 1];
+
+        // 오름차순으로 정렬 (DFS에서도 작은 번호부터 방문해야 함)
+        for (int i = 1; i <= n; i++) {
+            Collections.sort(nodearr[i]);
         }
-        
-        bw.write(sb.toString()); 
-        bw.flush();
-        
+
+        stack.push(start);
+        isVisit[start] = true;
+        sb.append(start).append(" "); // 시작 노드 방문 처리
+
+        while (!stack.isEmpty()) {
+            int current = stack.peek();
+            boolean foundNext = false;
+            for (int next : nodearr[current]) {
+                if (!isVisit[next]) {
+                    isVisit[next] = true;
+                    sb.append(next).append(" ");
+                    stack.push(next);
+                    foundNext = true;
+                    break; // 작은 번호부터 방문해야 하므로, 방문 후 바로 다음 탐색
+                }
+            }
+            // 더 이상 방문할 인접 노드가 없으면 스택에서 pop
+            if (!foundNext) {
+                stack.pop();
+            }
+        }
+        System.out.println(sb.toString().trim());
     }
-    
-    static void BFS(int start) throws IOException{
-        ArrayDeque<Integer> queue = new ArrayDeque<>();
-        StringBuilder sb = new StringBuilder();
-        queue.add(start);
-        visit[start] = 1;
-       // bw.write(start + " ");
-        sb.append(start + " ");
-        
-        while(!queue.isEmpty()){
-            int a = queue.poll();
-            for(int i = 1; i < N + 1;i++){
-                if(visit[i] == 0 && graph[a][i] == 1){
-                    queue.add(i);
-                    visit[i] = 1;
-                  //  bw.write(i + " ");
-                    sb.append(i + " ");
+
+    static void bfs(List<Integer>[] nodearr, int n, int start) {
+        StringBuilder js = new StringBuilder();
+        Deque<Integer> q = new ArrayDeque<>();
+        boolean[] isVisit = new boolean[n + 1];
+
+        // 오름차순으로 정렬
+        for (int i = 1; i <= n; i++) {
+            Collections.sort(nodearr[i]);
+        }
+
+        q.addLast(start);
+        isVisit[start] = true;
+
+        while (!q.isEmpty()) {
+            int num = q.pollFirst();
+            js.append(num).append(" "); // 공백 추가
+
+            for (int a : nodearr[num]) {
+                if (!isVisit[a]) {
+                    isVisit[a] = true;
+                    q.addLast(a);
                 }
             }
         }
-        
-        bw.write(sb.toString());
-        bw.flush();
-        
+        System.out.println(js.toString().trim());
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] str = br.readLine().split(" ");
+        int n = Integer.parseInt(str[0]); // 노드의 개수
+        int m = Integer.parseInt(str[1]); // 간선의 개수
+        int start = Integer.parseInt(str[2]); // 시작 노드
+
+        // 그래프 인접 리스트 초기화 (n+1 크기로 초기화, 1번부터 n번까지)
+        List<Integer>[] nodearr = new ArrayList[n + 1];
+        for (int i = 0; i <= n; i++) {
+            nodearr[i] = new ArrayList<>(); // 각 노드에 ArrayList 할당
+        }
+
+        // 간선 정보 입력
+        for (int i = 0; i < m; i++) {
+            String[] impl = br.readLine().split(" ");
+            int a = Integer.parseInt(impl[0]);
+            int b = Integer.parseInt(impl[1]);
+
+            // 양방향 그래프이므로 양쪽에 모두 추가
+            nodearr[a].add(b);
+            nodearr[b].add(a);
+        }
+
+        // DFS 실행
+        dfs(nodearr, n, start);
+
+        // BFS 실행
+        bfs(nodearr, n, start);
     }
 }
