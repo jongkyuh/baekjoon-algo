@@ -3,21 +3,25 @@ import java.util.*;
 public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        HashSet<Integer> hashSet = new HashSet<>();
-        int n = Integer.parseInt(sc.nextLine());
-        String[] str = sc.nextLine().split(" ");
-        for(int i = 0; i < n;i++){
-            hashSet.add(Integer.parseInt(str[i]));
+        Set<Integer> set = new HashSet<>();
+        int n1 = sc.nextInt();
+        sc.nextLine();
+        
+        String[] str1 = sc.nextLine().split(" ");
+        for(String s : str1){
+            set.add(Integer.parseInt(s));
         }
         
-        int m = Integer.parseInt(sc.nextLine());
+        int n2 = sc.nextInt();
+        sc.nextLine();
         String[] str2 = sc.nextLine().split(" ");
-        for(int i = 0; i<m;i++){
-            if(hashSet.contains(Integer.parseInt(str2[i]))){
-                System.out.println(1);
-            }else{
-                System.out.println(0);
-            }
+        
+        for(int i = 0; i < n2;i++){
+            int getNum = Integer.parseInt(str2[i]);
+            if(set.contains(getNum)) System.out.print(1 + " ");
+               else System.out.print(0 + " ");
         }
+        
+        
     }
 }
