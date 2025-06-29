@@ -1,24 +1,20 @@
 class Solution {
-    static int sum = 0;
-    static void dfs(int target, int targetLen, int count, int[] numbers, int num){
-        if(targetLen == count){
-            if(target == num){
-                sum++;                
+    static int result = 0;
+    
+    static void dfs(int num, int count, int[] numbers, int target){
+        if(count == numbers.length){
+            if(num == target){
+                result++;
             }
             return;
         }
         
-            dfs(target, targetLen, count + 1, numbers, num + (numbers[count] * -1));
-            dfs(target, targetLen, count + 1, numbers, num + (numbers[count] * 1));
-        
-        
-        
+        dfs(num + (numbers[count] * 1),count + 1, numbers, target);
+        dfs(num + (numbers[count] * -1),count + 1, numbers, target);
     }
-    
     public int solution(int[] numbers, int target) {
         int answer = 0;
-      //  int[] hubo = new int[]{-1,1};
-        dfs(target, numbers.length, 0, numbers, 0);
-        return sum;
+        dfs(0, 0, numbers, target);
+        return result;
     }
 }
