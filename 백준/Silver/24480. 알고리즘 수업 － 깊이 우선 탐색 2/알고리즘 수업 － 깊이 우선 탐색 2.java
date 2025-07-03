@@ -1,6 +1,24 @@
 import java.util.*;
 
 public class Main{
+    static Stack<Integer> stack;
+    static boolean[] visit;
+    static int[] result;
+    static int seq = 1;
+    static List<Integer>[] edges;
+    static void dfs(int n){
+        if(!visit[n]){
+            visit[n] = true;
+            result[n] = seq++;
+            for(int child : edges[n]){
+                if(!visit[child]){
+                     dfs(child); 
+                }
+
+            }
+        }
+        return;
+    }
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         
@@ -8,7 +26,7 @@ public class Main{
         int E =sc.nextInt();
         int start = sc.nextInt();
         
-        List<Integer>[] edges = new ArrayList[N+1];
+        edges = new ArrayList[N+1];
         for(int i = 0; i < N+1; i++){
             edges[i] = new ArrayList<>();
         }
@@ -19,25 +37,14 @@ public class Main{
             edges[b].add(a);
         }
         for(int i = 0; i < edges.length; i++){  
-            Collections.sort(edges[i]);    // 오름차순 정렬
+            Collections.sort(edges[i],Collections.reverseOrder());   
         }
         
-        int[] result = new int[N+1];
-        boolean[] visit = new boolean[N+1];
-        Stack<Integer> stack = new Stack<>();
-        int seq = 1;
-        stack.push(start);
-        while(!stack.isEmpty()){
-            int pop = stack.pop();
-            if(visit[pop])continue;
-            visit[pop] = true;
-            result[pop] = seq++;
-            for(int number : edges[pop]){
-                if(!visit[number]){
-                    stack.push(number);
-                }
-            }
-        }
+        result = new int[N+1];
+        visit = new boolean[N+1];
+       
+        stack = new Stack<>();
+        dfs(start);
         for(int i = 1; i < result.length; i++){
             System.out.println(result[i]);
         }
