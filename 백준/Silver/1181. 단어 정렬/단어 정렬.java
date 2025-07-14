@@ -1,0 +1,28 @@
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args){
+        Set<String> set = new HashSet<>();
+        Scanner sc =new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine();
+        for(int i = 0 ; i < n;i++){
+            set.add(sc.nextLine());            
+        }
+        
+        String[] str = set.toArray(new String[0]);
+        
+        Arrays.sort(str, (s1, s2) ->{
+            if(s1.length() != s2.length()){
+                return s1.length() - s2.length();
+            }
+            return s1.compareTo(s2);
+        });
+        
+        
+        for(String s : str){
+            System.out.println(s);
+        }
+        
+    }
+}
