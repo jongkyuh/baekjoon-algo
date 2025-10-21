@@ -1,38 +1,40 @@
 import java.util.*;
 
 class Solution {
-    static class Person{
+    
+    static class Node{
         int idx;
-        int p;
-        public Person(int idx, int p){
+        int priorities;
+        public Node(int idx, int priorities){
             this.idx = idx;
-            this.p = p;
+            this.priorities = priorities;
         }
     }
+
     public int solution(int[] priorities, int location) {
         int answer = 0;
-        Queue<Person> q = new ArrayDeque<>();
-        for(int i = 0; i < priorities.length; i++){
-            q.add(new Person(i, priorities[i]));
-        }
+        Queue<Node> q = new ArrayDeque<>(); // 우선순위 
         
-        while(true){
+        for(int i = 0; i < priorities.length; i++){
+            q.add(new Node(i, priorities[i]));
+        }
+        while(!q.isEmpty()){
             int max = 0;
-            for(Person getP : q){
-                max = Math.max(getP.p,max);
+            for(Node node : q){
+                max = Math.max(node.priorities, max);
             }
             
-            Person getPerson = q.poll();
-            
-            if(max == getPerson.p){
-                answer++;
-                if(getPerson.idx == location){
-                    break;
-                }
+            if(q.peek().priorities != max){ // 우선순위 안맞을 때  
+                q.add(q.poll());                
             }else{
-                q.add(getPerson);
+                Node pollNode = q.poll();
+                answer++;
+                if(location == pollNode.idx){
+                    return answer;
+                }else{
+                    continue;
+                }
             }
-            
         }
         return answer;
     }
