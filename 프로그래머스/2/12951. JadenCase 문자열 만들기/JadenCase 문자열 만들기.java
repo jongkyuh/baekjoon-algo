@@ -1,29 +1,20 @@
 class Solution {
     public String solution(String s) {
         String answer = "";
-        StringBuilder sb = new StringBuilder();
-        boolean canUpper = true;
-        
-        char[] arr = s.toCharArray();
-        
-        for(char c : arr){
+        boolean preGong = true;
+        for(char c : s.toCharArray()){
             if(c == ' '){
-                canUpper = true;
-                sb.append(" ");
+                answer += " ";
+                preGong = true;
                 continue;
             }
-            if(canUpper){
-                if(Character.isDigit(c)){
-                    sb.append(c);
-                    canUpper = false;
-                }else{
-                    sb.append(Character.toUpperCase(c));
-                    canUpper = false;
-                }
+            if(c != ' ' && preGong == true){
+                preGong = false;
+                answer += Character.toUpperCase(c) + "";
             }else{
-                sb.append(Character.toLowerCase(c));
+                answer += Character.toLowerCase(c) + "";
             }
         }
-        return sb.toString();
+        return answer;
     }
 }
