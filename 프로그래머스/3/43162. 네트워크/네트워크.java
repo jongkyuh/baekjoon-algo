@@ -1,35 +1,33 @@
 import java.util.*;
 
 class Solution {
-    static void bfs(int[][] computers, int start,  boolean[] visit){
-        Deque<Integer> q = new ArrayDeque<>();
-        q.addLast(start);
-        visit[start] = true;
+    static boolean[] visit; // 방문 배열(공유)
+    static Queue<Integer> q = new ArrayDeque<>();
     
+    static void dfs(int[][] computers, int start){
+        q.add(start);
+        visit[start] = true;    // 방문 표시 
         while(!q.isEmpty()){
-            int pollNum = q.pollFirst();
-            
-            for(int i = 0; i < computers.length; i++){
-                if(computers[pollNum][i] == 1 && visit[i] == false){
-                    visit[i] = true;
-                    q.addLast(i);
-                }
+           int pollNum = q.poll(); // 큐에서 데이터 가져옴
+        
+        for(int i = 0; i < visit.length; i++){
+            if(!visit[i] && computers[pollNum][i] == 1){
+                q.add(i);
+                visit[i] = true;
             }
-            
+        } 
         }
         
-        
     }
-    
     public int solution(int n, int[][] computers) {
         int answer = 0;
-        boolean[] visit = new boolean[n];
-        
+        visit= new boolean[computers.length];
         for(int i = 0; i < n; i++){
             if(!visit[i]){
-                bfs(computers, i, visit);
+                dfs(computers, i);
                 answer++;
             }
+            
         }
         return answer;
     }
