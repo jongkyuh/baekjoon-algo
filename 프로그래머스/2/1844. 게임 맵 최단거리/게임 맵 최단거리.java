@@ -1,45 +1,36 @@
 import java.util.*;
 
 class Solution {
+    static int answer = Integer.MAX_VALUE;
+    static int[][] dist;
+    static int[] addX = new int[]{-1, 0, 1, 0};
+    static int[] addY = new int[]{0, 1, 0, -1};
     
-    static class Node{
-        int x;
-        int y;
-        public Node(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
-    public int solution(int[][] maps) {
-        int answer = 0;
-        int[][] visit = new int[maps.length][maps[0].length];
-        Queue<Node> q = new ArrayDeque<>();
-        
-        // x와y의 이동방향 배열             
-        int[] dx = new int[]{-1, 0, 1, 0};
-        int[] dy = new int[]{0, 1, 0, -1};
-        
-        q.add(new Node(0,0));
-        visit[0][0] = 1;
-
+    static void bfs(Queue<int[]> q, int[][] maps, int[][] dist){
         while(!q.isEmpty()){
-            Node cNode = q.poll();  // 꺼낸 노드
-            int cx = cNode.x;
-            int cy = cNode.y;
-            
+            int[] pollArr = q.poll();
             for(int i = 0; i < 4; i++){
-                int nx = cx + dx[i];
-                int ny = cy + dy[i];
-                if(nx >= 0 && nx < maps.length && ny >= 0 && ny < maps[0].length){
-                    if(maps[nx][ny] == 1 && visit[nx][ny] == 0){
-                        q.add(new Node(nx, ny));
-                        visit[nx][ny] = visit[cx][cy] + 1;
-                    }
+                int nextX = pollArr[0] + addX[i];
+                int nextY = pollArr[1] + addY[i];
+                if(nextX >= 0 && nextX < maps.length &&
+                   nextY >= 0 && nextY < maps[0].length){
+                   if(maps[nextX][nextY] == 1 && dist[nextX][nextY]==0){
+                       q.add(new int[]{nextX, nextY});
+                       dist[nextX][nextY] = dist[pollArr[0]][pollArr[1]] + 1;
+                   }
                 }
             }
         }
+    }
+    public int solution(int[][] maps) {
+        // maps 0은 벽, 1이 다닐 수 있는 길 maps == 1 && 방문 안한곳
+        dist = new int[maps.length][maps[0].length];
+        dist[0][0] = 1;
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{0,0});
+        bfs(q, maps, dist);
         
-        int result = visit[visit.length - 1][visit[0].length - 1];
-        return result != 0 ? result : -1;
+        return dist[maps.length - 1][maps[0].length - 1] != 0 ? 
+                 dist[maps.length - 1][maps[0].length - 1] : -1;
     }
 }
