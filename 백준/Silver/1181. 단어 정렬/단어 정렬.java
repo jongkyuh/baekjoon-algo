@@ -2,27 +2,30 @@ import java.util.*;
 
 public class Main{
     public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
         Set<String> set = new HashSet<>();
-        Scanner sc =new Scanner(System.in);
-        int n = sc.nextInt();
+        List<String> list = new ArrayList<>();
+        
+        int N = sc.nextInt();
         sc.nextLine();
-        for(int i = 0 ; i < n;i++){
-            set.add(sc.nextLine());            
+        String[] arr = new String[N];
+        for(int i = 0; i < N; i++){
+            String s = sc.nextLine();
+            if(!list.contains(s)) list.add(s);
         }
         
-        String[] str = set.toArray(new String[0]);
-        
-        Arrays.sort(str, (s1, s2) ->{
-            if(s1.length() != s2.length()){
-                return s1.length() - s2.length();
-            }
-            return s1.compareTo(s2);
+        list.sort((a,b) -> {
+           if(Integer.compare(a.length(), b.length()) == 0){
+               return a.compareTo(b);
+           }
+            return Integer.compare(a.length(), b.length());            
         });
         
-        
-        for(String s : str){
-            System.out.println(s);
+        String[] result = list.stream().toArray(String[]::new);
+        for(int i = 0; i < result.length; i++){
+            System.out.println(result[i]);
         }
+        
         
     }
 }
